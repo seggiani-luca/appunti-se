@@ -24,3 +24,12 @@ jobs:
       - name: Run LaTeX build script
         run: |
           python make_master_monolithic.py
+          
+      - name: Commit and push PDF
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git checkout -B build
+          git add master/master.pdf
+          git commit -m "Updated master" || echo "No changes to commit"
+          git push -f origin build
