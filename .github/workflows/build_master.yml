@@ -1,0 +1,34 @@
+name: build_master
+
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build-master:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-binaries
+        
+      - name: Download build script
+        run: |
+          curl -O https://raw.githubusercontent.com/seggiani-luca/note-tools/refs/heads/main/make_master_monolithic.py
+
+      - name: Run LaTeX build script
+        run: |
+          python make_master_monolithic.py
