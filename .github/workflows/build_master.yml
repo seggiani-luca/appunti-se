@@ -25,12 +25,9 @@ jobs:
         run: |
           python make_master_monolithic.py
           
-      - name: Commit and push PDF
-        run: |
-          git config --global --add safe.directory /__w/appunti-se/appunti-se
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git checkout -B build
-          git add -f master/master.pdf
-          git commit -m "Updated master" || echo "No changes to commit"
-          git push -f origin build
+      - name: Deploy PDF to build branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: build
+          publish_dir: ./master 
