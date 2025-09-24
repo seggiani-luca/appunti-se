@@ -24,6 +24,7 @@ jobs:
       - name: Run LaTeX build script
         run: |
           python make_master_monolithic.py
+          rm master.aux master.log master.out
           
       - name: Deploy PDF to build branch
         uses: peaceiris/actions-gh-pages@v3
