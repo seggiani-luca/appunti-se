@@ -251,7 +251,7 @@ L'\textbf{UP} (\textit{Unified Process}) è un processo di ingegnerizzazione sof
 	\item Iterativo ed incrementale, cioè suddivide il progetto in iterazioni incrementali che arrivano da zero al sistema funzionante.
 \end{enumerate}
 
-Ciascuna iterazione comprende più fasi che la caratterizzano:
+Ciascuna iterazione è finalizzata a uno o più \textit{sotto-obiettivi}: 
 \begin{itemize}
 	\item Pianificazione;
 	\item Analisi e progetto;
@@ -261,8 +261,16 @@ Ciascuna iterazione comprende più fasi che la caratterizzano:
 \end{itemize}
 
 Ogni iterazione genera la cosiddetta \textit{baseline}, cioè la versione da cui partira la prossima iterazione, e via dicendo.
+L'\textit{incremento} sarà rappresentato dalla variazione da una baseline alla successiva.
 
-Le fasi vengono implementate seguendo 5 workflow riassunti dalla sigla \textbf{RADIT} (\textit{Requirements, Analysis, Design, Implementation, Test}).
+Le fasi vengono implementate seguendo sostanzialmente uno o più fra 5 workflow riassunti dalla sigla \textbf{RADIT}:
+\begin{itemize}
+	\item \textbf{Requirements} (requisiti);
+	\item \textbf{Analysis} (analisi);
+	\item \textbf{Design} (design);
+	\item \textbf{Implementation} (implementazione);
+	\item \textbf{Test} (test).
+\end{itemize}
 
 \subsubsection{Struttura dell'UP}
 Il ciclo di vita del progetto si evolve in più iterazioni (ciascuna delle quali comprende i 5 workflow RADIT)
@@ -319,7 +327,7 @@ In particolare, potremmo avere:
 	\end{tabular}
 \end{table}
 
-	\item \textbf{Transition} (transizione): questa è la fase dove si risolvono i difetti delle versioni beta e si prepara l'installazione del software nell'infrastruttura dell'utente.
+	\item \textbf{Transition} (transizione): questa è la fase dove si risolvono i difetti delle versioni beta e si prepara l'installazione del software nell'infrastruttura dell'utente. Inoltre si realizzano i manuali utente ed eventualmente si fornisce consulenza.
 
 		Il workflow comprenderà sviluppo e testing delle ultime funzionalità.
 
@@ -335,7 +343,7 @@ In particolare, potremmo avere:
 
 \end{enumerate}
 
-Ciascuna fase corrisponde a una o più iterazioni. Non è detto che lo "sforzo" (\textit{effort}) su ogni workflow sia però lo stesso su ogni workflow nelle diverse fasi.
+Ciascuna fase corrisponde a una o più iterazioni. Non è detto che lo "sforzo" (\textit{effort}) su ogni workflow sia però lo stesso su ogni workflow nelle diverse fasi: abbiamo infatti dettagliato quali sono gli workflow più indicati per ogni fase.
 
 \subsection{Workflow requisiti}
 Il workflow requisiti ha compito di individuare i requisiti del sistema.
@@ -389,13 +397,99 @@ La modellizzazione dei casi d'uso fa parte dell'ingegnerizzazione dei requisiti 
 		In UML i confini del sistema sono chiamati \textbf{soggetto};
 	\item Trovare gli attori coinvolti nell'uso del sistema, cioè il ruolo che le entità esterne assumono quando interagiscono \textit{direttamente} col sistema.
 
-		In UML anche gli attori possono essere detti \textbf{soggetto};
-	\item Trovare i casi d'uso del sistema, cioè il tipo di operazioni che il sistema dovrà compiere per conto degli utenti all'interno del suo dominio.
+		In UML gli attori sono esterni ai \textbf{soggetti}. Potrebbe comunque essere che un sistema detiene una rappresentazione interna dell'attore (ad esempio una classe o un record di DB che mantiene i dati dell'utente);
+	\item Trovare i casi d'uso del sistema, cioè il tipo di operazioni che il sistema dovrà compiere per conto degli utenti all'interno del suo dominio. A un caso d'uso è associato un \textit{flusso} d'utilizzo del sistema da parte dell'utente. Flussi che divergono dal flusso di default vanno categorizzati e sono detti \textit{flussi alternativi}.
 \end{itemize}
+
+Un caso d'uso è quindi modellizzato attraverso una struttura tabulare che rispecchia la seguente:
+\begin{table}[H]
+	\center 
+	\begin{tabular} { | p{10cm} | }
+		\hline
+		\bfseries Nome caso d'uso \\ 
+		\hline
+		Indice \\ 
+		\hline
+		Descrizione \\ 
+		\hline
+		Attore primario \\ 
+		\hline
+		Attori secondari \\ 
+		\hline
+		Precondizioni \\
+		\hline
+		\textbf{Flusso principale}:
+		\begin{itemize}
+			\item Azione 1;
+			\item Azione 2;
+			\item ecc...
+		\end{itemize} \\
+		\hline
+		Postcondizioni \\ 
+		\hline
+		\textbf{Flussi alternativi}:
+		\begin{itemize}
+			\item Azione 2 fallita $\rightarrow$ Azione 3;
+			\item ecc...
+		\end{itemize} \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Un caso d'uso è sempre avviato da un singolo attore, l'attore \textbf{primario}. Questo non preclude il fatto che più attori possano avviare lo stesso flusso in momenti diversi. Inoltre, non preclude che altri attori vengano coinvolti: questi saranno gli attori \textbf{secondari}.
+
+Per definire i casi d'uso in UML usiamo ancora una sintassi molto semplice:
+\begin{lstlisting}[style=codestyle]	
+Il caso d'uso inizia quando un <attore> <funzione>
+\end{lstlisting}
+
+Il flusso di eventi è a questo punto una sequenza (nel caso più semplice):
+\begin{lstlisting}[style=codestyle]	
+<numero> Il <attore o altro> <azione>
+\end{lstlisting}
+Per flussi più complicati ci è concesso usare altri costrutti più tipici della programmazione strutturata, cioè:
+\begin{itemize}
+	\item Costrutti di ripetizione (\lstinline|for|, \lstinline|while|, ecc...);
+	\item Costrutti condizionali (\lstinline|if|, ecc...).
+\end{itemize}
+
+I flussi alternativi possono attivarsi in 3 modi differenti:
+\begin{itemize}
+	\item Per scelta deliberata dell'attore principale;
+	\item Attivato dopo un passo del flusso principale, in questo caso si specifica:
+\begin{lstlisting}[style=codestyle]	
+Il flusso alternativo comincia dopo il passo <numero> del flusso principale
+\end{lstlisting}
+	\item Attivato ad un passo qualsiasi del flusso principale, in questo caso si specifica:
+\begin{lstlisting}[style=codestyle]	
+Il flusso alternativo comincia in qualsiasi momento 
+\end{lstlisting}
+\end{itemize}
+
+Chiaramente, in ogni caso deve esserci una condizione che si verifica perché il flusso alternativo cominci.
+
+\subsubsection{Confronto fra requisiti e casi d'uso}
+Una volta terminata l'analisi dei requisiti e dei casi d'uso, si può procedere a stabilire le relazioni che collegano queste 2 categorie (una relazione molti a molti).
+Strumento utile in questo caso è la \textbf{matrice di tracciabilità}:
+
+\begin{center}
+\raisebox{0}{\rotatebox{90}{Requisiti}}
+\begin{tabular}[b]{| c | c | c |}
+  \multicolumn{3}{c}{Casi d'uso} \\
+	\hline
+	X & & X \\
+	\hline
+		& X & \\
+		\hline
+		& & X \\
+	 \hline
+\end{tabular}
+\end{center}
 
 \subsubsection{Glossario di progetto}
 Il \textit{glossario di progetto} è uno dei deliverable principali della fase di ingegnerizzazione dei requisiti.
 Questo fornisce un dizionario di termini chiave e definizioni usate nel dominio di applicazione, comprensibili a chiunque sia coinvolto nel progetto.
 Di fondamentale importanza è individuare i \textbf{sinonimi}, che potrebbero essere innumerevoli e non apparentemente equivalenti.
+Non meno importanti sono gli \textbf{omonimi}, cioè parole uguali usate con significati diversi. 
 
 \end{document}
