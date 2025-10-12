@@ -232,12 +232,29 @@
 % testo
 Cotinuiamo a parlare dell'analisi dei requisiti, in particolare riguardo ai casi d'uso, introdotti in 2.3.3.
 
-\subsubsection{Modellizzazione casi d'uso avanzata}
+\subsection{Modellizzazione casi d'uso avanzata}
 La modellizzazione dei casi d'uso già vista, comprensiva di \textit{soggetto} (il dominio del sistema), \textit{attori} (entità che interagiscono col sistema) e \textit{casi d'uso} (modalità secondo le quali si interagisce col sistema) può essere espansa introducendo alcuni costrutti dal paradigma della programmazione ad oggetti. Vediamone alcuni:
 \begin{itemize}
-	\item Può essere utile stabilire \textbf{relazioni} fra attori e casi d'uso, cioè semplicemente stabilire quali attori usino quali casi d'uso (senza negare a più attori di usare lo stesso caso d'uso);
-	\item La complessità data da più attori che interagiscono con gli stessi casi d'uso può essere ridotta introducendo la \textbf{generalizzazione degli attori}: più \textit{sottoattori} potrebbero ereditare relazioni con casi d'uso da un \textit{superattore} comune e \textit{generico};
+	\item Può essere utile stabilire \textbf{relazioni} fra attori e casi d'uso, cioè semplicemente stabilire quali attori usino quali casi d'uso (senza negare a più attori di usare lo stesso caso d'uso).
+		Vediamo ad esempio come a due attori diversi, \textit{Cliente} e \textit{AgenteVendite}, possono interessare casi d'uso differenti all'interno dello stesso sistema: 
+\begin{center}
+	\includegraphics[scale=0.35]{../figures/assoc_attori_casi_uso.png}
+\end{center}
+
+	\item La complessità data da più attori che interagiscono con gli stessi casi d'uso può essere ridotta introducendo la \textbf{generalizzazione degli attori}: più \textit{sottoattori} potrebbero ereditare relazioni con casi d'uso da un \textit{superattore} comune e \textit{generico}.
+		Riguardo all'esempio precedente, vediamo come si può introdurre un \textit{Acquirente}:
+\begin{center}
+	\includegraphics[scale=0.3]{../figures/general_attori_casi_uso.png}
+\end{center}
+Gli attori \textit{Cliente} e \textit{AgenteVendite} diventano a questo punto generalizzazioni di \textit{Acquirente}.
+Notiamo come questo ci permette di spiegare elegantemente come mai entrambi gli attori sono interessati a casi d'uso comuni come \textit{ElencaProdotti}, ecc...
+
 	\item Come si generalizzano gli attori, potrebbe essere utile stabilire la \textbf{generalizzazione dei casi d'uso}: i sottocasi ereditano tutte le caretteristiche (relazioni, punti d'estensione, precondizioni, postcondizioni, flussi principali e alternativi) del supercaso, e possono sovrascriverle (tranne relazioni e punti d'estensione).
+		Ad esempio, nell sistema visto finora si potrebbe voler generalizzare il caso d'uso \textit{TrovaProdotto} sulla base del prodotto cercato:
+\begin{center}
+	\includegraphics[scale=0.35]{../figures/general_casi_uso.png}
+\end{center}
+
 		Potrebbe essere utile definire alcune regole su come i sottocasi possono sovrascrivere i flussi dei supercasi, assunti questi come liste di operazioni:
 		\begin{itemize}
 			\item Si indicano fra parentesi le operazioni ereditate, ad esempio 3. (3.) o 4. (3.) se si è rinumerata;
@@ -247,9 +264,16 @@ La modellizzazione dei casi d'uso già vista, comprensiva di \textit{soggetto} (
 	\item Se si prevedono casi d'usi e attori "figli", possiamo anche prevedere casi d'uso e attori \textbf{astratti}, cioè incompleti e pensati per definire caratteristiche base. In particolare, preferiamo definire i \textbf{casi d'uso astratti} come casi d'uso con sequenze di operazioni incomplete e da definire, mentre gli \textbf{attori astratti} possono essere una variante più forte degli \textit{attori generici} visti quando abbiamo introdotto la \textit{generalizzazione degli attori}. 
 \end{itemize}
 
+\subsubsection{Relazioni \lstinline|<<include>>| e \lstinline|<<extend>>|}
 Altri due meccanismi di estensione della modellizzazione dei casi d'uso sono rappresentati dalle relazioni \lstinline|<<include>>| e \lstinline|<<extend>>|. Abbiamo che queste relazioni sollevano la specifica del flusso dalle relazioni di ereditarietà fra casi d'uso, mantenendo solo il collegamento semantico. Vediamole nel dettaglio:
 \begin{itemize}
 	\item La relazione \lstinline|<<include>>| definisce, appunto, l'\textit{inclusione} di un caso d'uso (detto \textbf{caso d'inclusione}) all'interno di un altro (detto \textbf{caso base}). Dal punto di vista del programmatore, il caso d'inclusione rappresenta un frammento di comportamento che viene ripetuto in più casi d'uso base allo stesso modo (la corrispondenza più significativa dal lato implementativo è una banale chiamata di funzione).
+
+		Un esempio di inclusione di casi d'uso potrebbe essere il seguente:
+\begin{center}
+	\includegraphics[scale=0.25]{../figures/include_casi_uso.png}
+\end{center}
+		dove il frammento di comportamento \textit{TrovaDatiDipendente} è incluso nei casi d'uso \textit{CambiaDatiDipendente}, \textit{VisualizzaDatiDipendente}, \textit{EliminaDatiDipendente}.
 
 		Abbiamo che sicuramente i casi base non sono completi senza casi d'inclusione. Di contro, anche i casi di inclusione possono essere incompleti senza un caso base che li includa: in questo caso si dicono \textbf{non istanziabili}.
 
@@ -257,7 +281,14 @@ Altri due meccanismi di estensione della modellizzazione dei casi d'uso sono rap
 
 		Per approfondire, abbiamo che ogni caso d'uso d'estensione non è completo, e consiste di più frammenti detti \textbf{segmenti di inserzione}. Ogni segmento di inserzione deve combaciare con un punto d'estensione del caso base che si va ad estendere. Inoltre, si può avere che due casi di estensione estendono lo stesso punto d'estensione: in questo caso si prevedono più comportamenti d'estensione, il cui ordine di esecuzione è indeterminato.
 
-		Infine, i casi di estensione possonoo essere vincolati da \textit{precondizione}, e vincolare lo stato successivo del sistema dopo la loro esecuzione attraverso \textit{postcondizioni}. Per completare il quadro assieme all'esempio fatto sopra, la corrispondenza implementativa più banale è quella di una chiamata condizionale di funzione.
+\newpage
+
+		Vediamo come si possono estendere i casi d'uso degli esempi precedenti introducendone uno, \textit{EmettiMulta}, e usandolo per estendere i flussi alternativi di fallimento:
+\begin{center}
+	\includegraphics[scale=0.35]{../figures/extend_casi_uso.png}
+\end{center}
+
+		Infine, abbiamo che i casi di estensione possonoo essere vincolati da \textit{precondizione}, e vincolare lo stato successivo del sistema dopo la loro esecuzione attraverso \textit{postcondizioni}. Per completare il quadro assieme all'esempio fatto sopra, la corrispondenza implementativa più banale è quella di una chiamata condizionale di funzione.
 \end{itemize}
 
 \subsection{Workflow analisi}
@@ -361,10 +392,20 @@ Oltre a queste metodologie si possono individuare le classi sfruttando oggetti f
 Una volta individuate le classi, cioè la struttura \textit{statica} del sistema, è opportuno definire la natura \textit{dinamica} della collaborazione che ci aspettiamo fra le stesse.
 Questa si definisce attraverso \textbf{collegamenti} fra \textit{oggetti} e \textbf{associazioni} fra \textit{classi}.
 
-Per definire i collegamenti bisogna usare un linguaggio sollevato delle specifiche del linguaggio di programmazione, come i \textbf{diagrammi ad oggetti} dell'UML.
-I collegamenti in UML sono \textbf{dinamici} (non fissi nel tempo), possono essere \textbf{bidirezionali} o \textbf{monodirezionali}, e devono essere supportati da una \textit{associazione} fra classi.
+Per definire i collegamenti bisogna usare un linguaggio sollevato delle specifiche del linguaggio di programmazione, come i \textbf{diagrammi ad oggetti} dell'UML:
+\begin{center}
+	\includegraphics[scale=0.3]{../figures/diag_oggetti.png}
+\end{center}
 
-Le associazioni sono solitamente più sofisticate nei diagrammi, e collegate ai rispettivi collegamenti da relazioni \lstinline|<<instatiate>>|. Nelle associazioni vogliamo definire una stringa che definisce l'associazione, i \textbf{ruoli} delle classi coinvolte, e magari indicazioni sulla \textbf{molteplicità} dell'associazione (uno a uno, uno a molti, molti a molti e via dicendo).
+I \textit{collegamenti} in UML sono \textbf{dinamici} (non fissi nel tempo), possono essere \textbf{bidirezionali} o \textbf{monodirezionali}, e devono essere supportati da una \textit{associazione} fra classi.
+
+Le \textit{associazioni} sono solitamente più sofisticate nei diagrammi, e collegate ai rispettivi collegamenti da relazioni \lstinline|<<instatiate>>|. Nelle associazioni vogliamo definire una stringa che definisce l'associazione, i \textbf{ruoli} delle classi coinvolte, e magari indicazioni sulla \textbf{molteplicità} dell'associazione (uno a uno, uno a molti, molti a molti e via dicendo).
+
+Vediamo quindi come \textit{associzioni} e \textit{collegamenti} sono schematizzabili rispettivamente fra \textbf{classi} e \textbf{oggetti}, cioè:
+\begin{center}
+	\includegraphics[scale=0.3]{../figures/assoc_colleg.png}
+\end{center}
+
 La molteplicità può poi essere supportata dalla \textbf{navigabilità} dell'associazione, intesa nei nostri scopi come la possibilità di raggiungere una classe a partire da quella a cui è associata.
 Dovrebbe apparire chiaro come, ad esempio, una classe che contiene un riferimento ad un'altra ci permette di navigare verso questa, e non viceversa.
 Il sistema di navigabilità di UML 2.0 è comunque più sofisticato di quanto effettivamente necessario, e le associazioni \textit{bidirezionali} e \textit{monodirezionali} bastano spesso a riassumere tutta la funzionalità di cui abbiamo bisogno.
@@ -412,10 +453,38 @@ Esistono 3 tipi di dipendenze in UML:
 La \textbf{generalizzazione} o \textit{ereditarietà} è la forma più forte di dipendenza.
 Questa indica che un entità cliente (detta \textit{specializzata}) può essere usata in qualsiasi contesto dell'entità fornitore (detta \textit{base}), con la differenza che l'entità cliente definisce informazioni e procedure aggiuntive rispetto all'entità fornitore.
 
+Facciamo l'esempio classico di un \textbf{diagramma di ereditarietà} che definisce una \textit{tassonomia} di classi (cioè) il modo in cui più classi ereditano funzionailtà l'una dall'altra, dall'alto verso il basso:
+\begin{center}
+	\begin{forest}
+		[Animal, rectstyle
+			[Dog
+				[Bulldog]
+				[Chihuaha]
+				[Hound]
+			]
+			[Bear]
+			[Axolotl]
+		]	
+	\end{forest}
+\end{center}
+
+In particolare, in questo caso vogliamo usare l'ereditarietà per modellare una relazione \lstinline|<<is-a>>| (\textit{"è un"}): un bulldog \textit{è un} cane, che a sua volta \textit{è un} animale, e cosi via.
+
+Sfruttando l'ereditarietà riusciamo quindi a modellare bene il tipo di categorizzazioni che incontreremo naturalmente nel soggetto del sistema che andiamo a sviulppare.
+
 \subsubsection{Polimorfismo}
 L'idea del \textbf{polimorfismo} è simile a quella dell'ereditarietà, e indica contesti dove si può inviare lo stesso messaggio a entità di classe differente e aspettarsi risposte semanticamente appropiate.
 
-Per fissare i concetti, una classe base \textit{Veicolo} può essere \textbf{generalizzata} in \textit{Camion}, \textit{Elicottero}, ecc... la possibilità di inviare a tutte queste il segnale \textit{guida()} è un'esempio di \textbf{polimorfismo}.
+Per fissare i concetti, una classe base \textit{Veicolo} può essere \textbf{generalizzata} in \textit{Camion}, \textit{Elicottero}, ecc... la possibilità di inviare a tutte queste il segnale \textit{guida()} è un'esempio di \textbf{polimorfismo}:
+\begin{center}
+	\begin{forest}
+		[Conducente, rectstyle
+			[Camion, edge label={node[midway,left]{guida()}}]
+			[Elicottero, edge label={node[midway,right]{guida()}}]
+		]	
+	\end{forest}
+\end{center}
+
 Chiaramente, in un linguaggio di programmazione reale si dovranno usare i costrutti tipici dell'OOP per realizzare la stessa funzionalità, come classi o membri \textit{astratti} e il meccanismo dell'\textit{overriding}.
 
 \end{document}

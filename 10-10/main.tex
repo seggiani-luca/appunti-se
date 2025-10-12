@@ -279,11 +279,23 @@ La freccia che rappresenta il messaggio può codificare diverse informazioni:
 
 Esistono poi altri modelli che rappresentano informazioni come il \textit{messaggio di ritorno}, la \textit{creazione o distruzione di oggetti}, ecc...
 
+Vediamo quindi un esempio di due linee vita associate a \textit{classi} che si scambiano messaggi in UML:
+\begin{center}
+	\includegraphics[scale=0.4]{../figures/lifeline_mess.png}
+\end{center}
+
 \subsubsection{Frammenti combinati}
 I diagrammi di sequenza possono essere suddivisi in “aree” dette \textbf{frammenti combinati}.
 Ogni frammento combinato ha un operatore, uno o più operandi e zero o più condizioni di guardia.
 
 L'\textbf{operatore} determina come gli operandi vengono eseguiti: solitamente gli operatori ricalcano i costrutti dei linguaggi strutturati o altre caratteristiche dell'operazioni che vengono svolte (ad esempio esecuzione \textit{parallela}, \textit{atomica}, ecc...).
+
+\newpage
+
+La sintassi in UML sarà quindi la seguente:
+\begin{center}
+	\includegraphics[scale=0.4]{../figures/frammenti_comb.png}
+\end{center}
 
 Vediamo una tabella che riassume gli operatori principali:
 \begin{table}[H]
@@ -319,12 +331,20 @@ Questo può essere usato per riferirsi a frammenti di interazione in altri diagr
 Le interazioni possono essere \textbf{parametrizzate}.
 Questo permette di fornire valori diversi all'interazione ad ognuna delle sue occorrenze (meccanismo simile al passaggio di argomenti).
 
+A scopo di esempio vediamo le interazioni parametrizzate \textit{TrovaStudente} e \textit{TrovaCorso} di un sistema di gestione univeristario:
+\begin{center}
+	\includegraphics[scale=0.3]{../figures/frammenti_param.png}
+\end{center}
+
 \subsubsection{Gate}
 I \textit{cancelli} (\textbf{gate}) rappresentano vie di accesso alle interazioni dall'esterno. Vengono quindi usati quando un’interazione è attivata da una linea di vita che non è parte dell’interazione stessa.
 
 Vengono rappresentati graficamente come entrate ed uscite sulla finestra dell'interazione: questi punti connettono messaggi fuori dall'interazione a messaggi dentro l'interazione.
 
-\par\smallskip
+Sempre nel contesto dell'esempio sompra, vediamo come le interazioni viste possono essere realizzate anche coi gate:
+\begin{center}
+	\includegraphics[scale=0.3]{../figures/frammenti_gate.png}
+\end{center}
 
 Il meccanismo dei gate potrebbe sembrare simile a quello dei parametri. In sostanza si può dire che:
 \begin{itemize}
@@ -340,7 +360,11 @@ Abbiamo studiando nel workflow \textit{requisiti} come estrapolare i requisiti d
 Abbiamo che questo workflow è tipico della fase di \textit{elaborazione} e \textit{costruzione} del software vero e proprio.
 
 \subsubsection{Classi di progetto}
-Di base, per ogni \textit{classe di analisi} ci sono una o più \textbf{classi di progetto}.
+Di base, per ogni \textit{classe di analisi} ci sono una o più \textbf{classi di progetto}, e opportunamente delle \textit{interfacce}:
+\begin{center}
+	\includegraphics[scale=0.4]{../figures/classi_analisi_progetto.png}
+\end{center}
+
 Queste non hanno più il solo scopo di modellare il dominio di problema, ma anche di essere realizzabili da programmatori veri e propri. 
 
 Abbiamo quindi che sono influenzate da:
@@ -382,20 +406,52 @@ Queste procedure possono essere:
 		\begin{itemize}
 			\item La relazione di \textbf{aggregazione} è una relazione lieve fra oggetti, che lega una parte ad un'intero dove l'intero è composto da molte parti.
 Le parti dell'intero sono in qualche modo autosufficienti, ed esistono a priori di questo.
+
+Un esempio di aggregazione è la relazione fra un computer e le sue parti:
+\begin{center}
+	\includegraphics[scale=0.3]{../figures/aggregazione.png}
+\end{center}
+
 			\item La relazione di \textbf{composizione} è di contro una relazione molto forte, dove la parte esiste in funzione dell'intero. Ad esempio, in questo caso se muore la parte muore anche l'intero.
+
+	Un esempio di composizione è la relazione fra la parte del computer e i suoi componenti:
+\begin{center}
+	\includegraphics[scale=0.3]{../figures/composizione.png}
+\end{center}
 		\end{itemize}
 
 		Chiaramente, bisogna distinguere prima chi nella relazione è la parte e chi l'intero, e poi risolvere problemi come capire le molteplicità (lato intero, da 0 a 1 si può comporre, oltre bisogna aggregare).
 
-	\item Implementare associazioni uno-a-uno: questo si può fare sia per composizione che per aggregazione;
-	\item Implementare associazioni molti-a-uno: questo si fa solitamente per aggregazione, prendendo le \textit{molte} parti come aggregate all'\textit{uno};
-	\item Implementare associazioni uno-a-molti: qui bisogna usare una classe \textit{collezione} esplicita, come ad esempio un vettore; 
+	\item Implementare associazioni uno-a-uno: questo si può fare sia per composizione che per aggregazione.
+		Ad esempio:
+\begin{center}
+	\includegraphics[scale=0.3]{../figures/uno-uno.png}
+\end{center}
+
+	\item Implementare associazioni molti-a-uno: questo si fa solitamente per aggregazione, prendendo le \textit{molte} parti come aggregate all'\textit{uno}.
+		Ad esempio:
+\begin{center}
+	\includegraphics[scale=0.3]{../figures/molti-uno.png}
+\end{center}
+
+	\item Implementare associazioni uno-a-molti: qui bisogna usare una classe \textit{collezione} esplicita, come ad esempio un vettore.
+		
+		Vediamo infatti il confronto fra la relazione molte a molti in fase di analisi alla sua implementazione in fase di progetto:
+\begin{center}
+	\includegraphics[scale=0.3]{../figures/uno-molti.png}
+\end{center}
+
+
 	\item Implementare associazioni molti-a-molti;
 	\item Implementare associazioni bidirezionali;
 	\item Implementare classi di associazioni.
 \end{itemize}
 
 \subsection{Realizzazione casi d'uso di progetto}
+Come per le classi di analisi, anche i casi d'uso vanno rielaborati in \textbf{casi d'uso di progetto}:
+\begin{center}
+	\includegraphics[scale=0.4]{../figures/casi_uso_analisi_progetto.png}
+\end{center}
 Rispetto all'attività corrisondente in fase di analisi, abbiamo in fase di progetto alcune differenze:
 \begin{itemize}
 	\item La realizzazione dei casi d'uso coinvolge l'uso di di classi progetto, interfacce e componenti piuttosto che classi d'analisi;
@@ -408,7 +464,15 @@ Una realizzazione di un caso d’uso nel progetto consiste in \textbf{diagrammi 
 \subsection{Workflow implementazione}
 Veniamo quindi all'implementazione effettiva del sistema progettato in fase di progetto. Chiave di questo workflow è la scrittura di \textbf{codice}, \textbf{testing} estensivo di ogni singola funzionalità che si vuole produrre, e \textbf{dislocazione} su un'architettura reale del sistema sviluppato.
 
-Solitamente in questa fase non è più necessario modellare ulteriori componenti.
+\newpage
+
+Vediamo un diagramma che spiega come vogliamo associare al modello realizzato in fase di progetto un \textit{implementaione} vera e propria:
+\begin{center}
+	\includegraphics[scale=0.4]{../figures/implementazione.png}
+\end{center}
+Nell'esempio, la relazione \lstinline|<<manifest>>| significa che i componenti d'implementazione, appunto, \textit{implementano} i relativi componenti della fase di progetto.
+
+Solitamente nella fase di implementazione questa fase non è più necessario modellare ulteriori componenti.
 Eccezioni potrebbero essere le situazioni:
 \begin{itemize}
 	\item Si vuole generare il codice direttamente dal modello;
@@ -432,6 +496,11 @@ Esistono 2 tipi di diagrammi di dislocazione:
 
 		Comunque, è possibile usare nodi e artefatti anonimi quando il loro comportamento è noto a prescindere dalla specificità. 
 \end{itemize}
+
+Vediamo quindi l'esempio di un diagramma di dislocazione, \textit{d'istanza}, relativo ad un'applicazione distribuita:
+\begin{center}
+	\includegraphics[scale=0.3]{../figures/dislocazione.png}
+\end{center}
 
 \subsubsection{Nodi}
 In dettaglio, i \textbf{nodi} rappresentano risorse computazionali che possono essere usate per realizzare il servizio. Ne distinguiamo 2 tipi:

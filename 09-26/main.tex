@@ -246,9 +246,9 @@ I modelli di UML rappresentano collezioni di \textbf{oggetti} \textit{interagent
 \subsection{Introduzione all'UP}
 L'\textbf{UP} (\textit{Unified Process}) è un processo di ingegnerizzazione software basato su 3 principi fondamentali:
 \begin{enumerate}
-	\item Guidato dall'analisi dei requisiti e dei rischi;
-	\item Centrato sull'architettura, cioè finalizzato alla produzione di un'architettura robusta;
-	\item Iterativo ed incrementale, cioè suddivide il progetto in iterazioni incrementali che arrivano da zero al sistema funzionante.
+	\item Guidato dall'analisi dei \textit{requisiti} e dei \textit{rischi};
+	\item Centrato sull'\textit{architettura}, cioè finalizzato alla produzione di un'architettura robusta;
+	\item \textit{Iterativo} ed \textit{incrementale}, cioè suddivide il progetto in iterazioni incrementali che arrivano da zero al sistema funzionante.
 \end{enumerate}
 
 Ciascuna iterazione è finalizzata a uno o più \textit{sotto-obiettivi}: 
@@ -281,7 +281,7 @@ In particolare individuiamo 4 fasi:
 
 		Gli workflow principali saranno requisiti ed analisi. 
 
-		Vediamo quelle che sono le \textit{milestone} associate a questa fase: vogliamo stabilire un'associazione fra \textit{condizioni} da soddisfare e \textit{deliverable} (\textit{consegnabili}) che possiamo appunto dare come ottenuti.
+		Vediamo quelle che sono le \textit{milestone} associate a questa fase: vogliamo stabilire un'associazione fra \textit{condizioni} da soddisfare e \textbf{deliverable} (\textit{consegnabili}) che possiamo appunto dare come ottenuti.
 In particolare, potremmo avere: 
 \begin{table}[H]
 	\center \rowcolors{2}{white}{black!10}
@@ -345,6 +345,14 @@ In particolare, potremmo avere:
 
 Ciascuna fase corrisponde a una o più iterazioni. Non è detto che lo "sforzo" (\textit{effort}) su ogni workflow sia però lo stesso su ogni workflow nelle diverse fasi: abbiamo infatti dettagliato quali sono gli workflow più indicati per ogni fase.
 
+Possiamo schematizzare lo sforzo sugli workflow per ogni fase con il seguente grafico:
+\begin{center}
+	\includegraphics[scale=0.4]{../figures/radit_timeline.png}
+\end{center}
+dove per ogni fascia associata agli workflow (Requirements, Analysis, ecc...) l'andamento del carico su quel workflow per ogni iterazione ($I_1$, ecc...).
+
+Notiamo come ad esempio la fase di testing diventa parte integrante di ogni iterazione praticamente dalla fase di elaborazione, se non per l'inizio dell'iterazione (dove presumibilmente stiamo progettando/implementando quanto sarà testato).
+
 \subsection{Workflow requisiti}
 Il workflow requisiti ha compito di individuare i requisiti del sistema.
 Questi sono di due tipi:
@@ -390,17 +398,33 @@ Un processo che possiamo usare è quello di \textit{deduzione} dei requisiti, te
 Altre metodologie sono le \textit{interviste}, i \textit{questionari} e i \textit{gruppi di lavoro}.
 
 \subsubsection{Modellizzazione casi d'uso}
-La modellizzazione dei casi d'uso fa parte dell'ingegnerizzazione dei requisiti e procede nel modo seguente:
+La \textbf{modellizzazione dei casi d'uso} fa parte dell'ingegnerizzazione dei requisiti, e consiste nell'individuare come gli \textit{attori} (sostanzialmente gli utenti e gli altri elementi coinvolti nell'uso del sistema) interagiscono con questo, all'interno del \textit{soggetto} (il dominio di operazione del sistema). 
+\begin{center}
+	\includegraphics[scale=0.4]{../figures/casi_uso.png}
+\end{center}
+
+Questo processo si svolge nel modo seguente:
 \begin{itemize}
 	\item Identificare un \textit{confine} candidato del sistema, cioè il dominio di operazione del sistema stesso. Identificare il confine del sistema significa capire cosa il sistema è e cosa non è. Questo aiuta nella definizione delle specifiche funzionali.
 
 		In UML i confini del sistema sono chiamati \textbf{soggetto};
-	\item Trovare gli \textit{attori} coinvolti nell'uso del sistema, cioè il ruolo che le entità esterne assumono quando interagiscono \textit{direttamente} col sistema.
+	\item Trovare gli \textit{attori} coinvolti nell'uso del sistema, cioè il \textit{ruolo} che le entità esterne assumono quando interagiscono \textit{direttamente} col sistema. 
+
+		Notiamo che nulla vieta che la stessa entità (fisica o astratta) assuma diversi ruoli nell'interazione col sistema. 
+		Ad esempio, possiamo pensare a un utente che si comporta sia da utilizzatore che da amministratore di un certo sistema.
 
 		In UML gli \textbf{attori} sono esterni ai \textit{soggetti}. Potrebbe comunque essere che un sistema detiene una rappresentazione interna dell'attore (ad esempio una classe o un record di DB che mantiene i dati dell'utente);
 	\item Trovare i \textbf{casi d'uso} del sistema, cioè il tipo di operazioni che il sistema dovrà compiere per conto degli utenti all'interno del suo dominio. A un caso d'uso è associato un \textit{flusso} d'utilizzo del sistema da parte dell'utente. Flussi che divergono dal flusso di default vanno categorizzati e sono detti \textit{flussi alternativi}.
 \end{itemize}
 
+\par\smallskip
+
+Vediamo come la modellizzazione dei casi d'uso ci dà una visione d'insieme di come il sistema interagisce, nel suo dominio (\textit{soggetto}) con le parti coinvolte (\textit{attori}):
+\begin{center}
+	\includegraphics[scale=0.4]{../figures/casi_uso_comp.png}
+\end{center}
+
+\subsubsection{Flussi di casi d'uo}
 Un caso d'uso è quindi modellizzato attraverso una struttura tabulare che rispecchia la seguente:
 \begin{table}[H]
 	\center 
@@ -436,7 +460,11 @@ Un caso d'uso è quindi modellizzato attraverso una struttura tabulare che rispe
 	\end{tabular}
 \end{table}
 
+L'\textbf{indice} è solitamente progressivo (si possono adottare tassonomie, sopratutto nel caso di progetti complessi).
+
 Un caso d'uso è sempre avviato da un singolo attore, l'attore \textbf{primario}. Questo non preclude il fatto che più attori possano avviare lo stesso flusso in momenti diversi. Inoltre, non preclude che altri attori vengano coinvolti: questi saranno gli attori \textbf{secondari}.
+
+Le \textbf{precondizioni} sono le condizioni che devono verificarsi affinché il caso d'uso venga messo in moto, le \textbf{postcondizioni} le condizioni che questo lascerà una volta terminato.
 
 Per definire i casi d'uso in UML usiamo ancora una sintassi molto semplice:
 \begin{lstlisting}[style=codestyle]	
@@ -447,6 +475,7 @@ Il flusso di eventi è a questo punto una sequenza (nel caso più semplice):
 \begin{lstlisting}[style=codestyle]	
 <numero> Il <attore o altro> <azione>
 \end{lstlisting}
+Vediamo come è possibile prevedere dei \textbf{flussi alternativi} rispetto al \textbf{flusso principale} del caso d'uso. Questo permette una modellazione di comportamenti di errore, eccezioni, o semplici anomalie del flusso principale che si vogliono modellizzare.
 Per flussi più complicati ci è concesso usare altri costrutti più tipici della programmazione strutturata, cioè:
 \begin{itemize}
 	\item Costrutti di ripetizione (\lstinline|for|, \lstinline|while|, ecc...);
@@ -491,5 +520,12 @@ Il \textit{glossario di progetto} è uno dei deliverable principali della fase d
 Questo fornisce un dizionario di termini chiave e definizioni usate nel dominio di applicazione, comprensibili a chiunque sia coinvolto nel progetto.
 Di fondamentale importanza è individuare i \textbf{sinonimi}, che potrebbero essere innumerevoli e non apparentemente equivalenti.
 Non meno importanti sono gli \textbf{omonimi}, cioè parole uguali usate con significati diversi. 
+
+\par\smallskip
+
+Un esempio di glossario di progetto, riferito ad un sistema per la gestione dei prospetti di laurea, potrebbe essere il seguente:
+\begin{center}
+	\includegraphics[scale=0.28]{../figures/glossario.png}
+\end{center}
 
 \end{document}
