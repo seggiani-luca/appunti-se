@@ -1,0 +1,304 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[a4paper, margin=8em]{geometry}
+
+% usa i pacchetti per la scrittura in italiano
+\usepackage[french,italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\frenchspacing 
+
+% usa i pacchetti per la formattazione matematica
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+
+% usa altri pacchetti
+\usepackage{gensymb}
+\usepackage{hyperref}
+\usepackage{standalone}
+
+\usepackage{colortbl}
+
+\usepackage{xstring}
+\usepackage{karnaugh-map}
+
+% imposta il titolo
+\title{Appunti Ingegneria del Software}
+\author{Luca Seggiani}
+\date{2025}
+
+% imposta lo stile
+% usa helvetica
+\usepackage[scaled]{helvet}
+% usa palatino
+\usepackage{palatino}
+% usa un font monospazio guardabile
+\usepackage{lmodern}
+
+\renewcommand{\rmdefault}{ppl}
+\renewcommand{\sfdefault}{phv}
+\renewcommand{\ttdefault}{lmtt}
+
+% circuiti
+\usepackage{circuitikz}
+\usetikzlibrary{babel}
+
+% testo cerchiato
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+% disponi il titolo
+\makeatletter
+\renewcommand{\maketitle} {
+	\begin{center} 
+		\begin{minipage}[t]{.8\textwidth}
+			\textsf{\huge\bfseries \@title} 
+		\end{minipage}%
+		\begin{minipage}[t]{.2\textwidth}
+			\raggedleft \vspace{-1.65em}
+			\textsf{\small \@author} \vfill
+			\textsf{\small \@date}
+		\end{minipage}
+		\par
+	\end{center}
+
+	\thispagestyle{empty}
+	\pagestyle{fancy}
+}
+\makeatother
+
+% disponi teoremi
+\usepackage{tcolorbox}
+\newtcolorbox[auto counter, number within=section]{theorem}[2][]{%
+	colback=blue!10, 
+	colframe=blue!40!black, 
+	sharp corners=northwest,
+	fonttitle=\sffamily\bfseries, 
+	title=Teorema~\thetcbcounter: #2, 
+	#1
+}
+
+% disponi definizioni
+\newtcolorbox[auto counter, number within=section]{definition}[2][]{%
+	colback=red!10,
+	colframe=red!40!black,
+	sharp corners=northwest,
+	fonttitle=\sffamily\bfseries,
+	title=Definizione~\thetcbcounter: #2,
+	#1
+}
+
+% disponi codice
+\usepackage{listings}
+\usepackage[table]{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{codestyle}{
+		backgroundcolor=\color{black!5}, 
+		commentstyle=\color{codegreen},
+		keywordstyle=\bfseries\color{magenta},
+		numberstyle=\sffamily\tiny\color{black!60},
+		stringstyle=\color{green!50!black},
+		basicstyle=\ttfamily\footnotesize,
+		breakatwhitespace=false,         
+		breaklines=true,                 
+		captionpos=b,                    
+		keepspaces=true,                 
+		numbers=left,                    
+		numbersep=5pt,                  
+		showspaces=false,                
+		showstringspaces=false,
+		showtabs=false,                  
+		tabsize=2
+}
+
+\lstdefinestyle{shellstyle}{
+		backgroundcolor=\color{black!5}, 
+		basicstyle=\ttfamily\footnotesize\color{black}, 
+		commentstyle=\color{black}, 
+		keywordstyle=\color{black},
+		numberstyle=\color{black!5},
+		stringstyle=\color{black}, 
+		showspaces=false,
+		showstringspaces=false, 
+		showtabs=false, 
+		tabsize=2, 
+		numbers=none, 
+		breaklines=true
+}
+
+
+\lstdefinelanguage{assembler}{ 
+  keywords={AAA, AAD, AAM, AAS, ADC, ADCB, ADCW, ADCL, ADD, ADDB, ADDW, ADDL, AND, ANDB, ANDW, ANDL,
+        ARPL, BOUND, BSF, BSFL, BSFW, BSR, BSRL, BSRW, BSWAP, BT, BTC, BTCB, BTCW, BTCL, BTR, 
+        BTRB, BTRW, BTRL, BTS, BTSB, BTSW, BTSL, CALL, CBW, CDQ, CLC, CLD, CLI, CLTS, CMC, CMP,
+        CMPB, CMPW, CMPL, CMPS, CMPSB, CMPSD, CMPSW, CMPXCHG, CMPXCHGB, CMPXCHGW, CMPXCHGL,
+        CMPXCHG8B, CPUID, CWDE, DAA, DAS, DEC, DECB, DECW, DECL, DIV, DIVB, DIVW, DIVL, ENTER,
+        HLT, IDIV, IDIVB, IDIVW, IDIVL, IMUL, IMULB, IMULW, IMULL, IN, INB, INW, INL, INC, INCB,
+        INCW, INCL, INS, INSB, INSD, INSW, INT, INT3, INTO, INVD, INVLPG, IRET, IRETD, JA, JAE,
+        JB, JBE, JC, JCXZ, JE, JECXZ, JG, JGE, JL, JLE, JMP, JNA, JNAE, JNB, JNBE, JNC, JNE, JNG,
+        JNGE, JNL, JNLE, JNO, JNP, JNS, JNZ, JO, JP, JPE, JPO, JS, JZ, LAHF, LAR, LCALL, LDS,
+        LEA, LEAVE, LES, LFS, LGDT, LGS, LIDT, LMSW, LOCK, LODSB, LODSD, LODSW, LOOP, LOOPE,
+        LOOPNE, LSL, LSS, LTR, MOV, MOVB, MOVW, MOVL, MOVSB, MOVSD, MOVSW, MOVSX, MOVSXB,
+        MOVSXW, MOVSXL, MOVZX, MOVZXB, MOVZXW, MOVZXL, MUL, MULB, MULW, MULL, NEG, NEGB, NEGW,
+        NEGL, NOP, NOT, NOTB, NOTW, NOTL, OR, ORB, ORW, ORL, OUT, OUTB, OUTW, OUTL, OUTSB, OUTSD,
+        OUTSW, POP, POPL, POPW, POPB, POPA, POPAD, POPF, POPFD, PUSH, PUSHL, PUSHW, PUSHB, PUSHA, 
+				PUSHAD, PUSHF, PUSHFD, RCL, RCLB, RCLW, MOVSL, MOVSB, MOVSW, STOSL, STOSB, STOSW, LODSB, LODSW,
+				LODSL, INSB, INSW, INSL, OUTSB, OUTSL, OUTSW
+        RCLL, RCR, RCRB, RCRW, RCRL, RDMSR, RDPMC, RDTSC, REP, REPE, REPNE, RET, ROL, ROLB, ROLW,
+        ROLL, ROR, RORB, RORW, RORL, SAHF, SAL, SALB, SALW, SALL, SAR, SARB, SARW, SARL, SBB,
+        SBBB, SBBW, SBBL, SCASB, SCASD, SCASW, SETA, SETAE, SETB, SETBE, SETC, SETE, SETG, SETGE,
+        SETL, SETLE, SETNA, SETNAE, SETNB, SETNBE, SETNC, SETNE, SETNG, SETNGE, SETNL, SETNLE,
+        SETNO, SETNP, SETNS, SETNZ, SETO, SETP, SETPE, SETPO, SETS, SETZ, SGDT, SHL, SHLB, SHLW,
+        SHLL, SHLD, SHR, SHRB, SHRW, SHRL, SHRD, SIDT, SLDT, SMSW, STC, STD, STI, STOSB, STOSD,
+        STOSW, STR, SUB, SUBB, SUBW, SUBL, TEST, TESTB, TESTW, TESTL, VERR, VERW, WAIT, WBINVD,
+        XADD, XADDB, XADDW, XADDL, XCHG, XCHGB, XCHGW, XCHGL, XLAT, XLATB, XOR, XORB, XORW, XORL},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{\#},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{language=assembler, style=codestyle}
+
+% disponi sezioni
+\usepackage{titlesec}
+
+\titleformat{\section}
+	{\sffamily\Large\bfseries} 
+	{\thesection}{1em}{} 
+\titleformat{\subsection}
+	{\sffamily\large\bfseries}   
+	{\thesubsection}{1em}{} 
+\titleformat{\subsubsection}
+	{\sffamily\normalsize\bfseries} 
+	{\thesubsubsection}{1em}{}
+
+% tikz
+\usepackage{tikz}
+
+% float
+\usepackage{float}
+
+% grafici
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.9}
+
+% disponi alberi
+\usepackage{forest}
+
+\forestset{
+	rectstyle/.style={
+		for tree={rectangle,draw,font=\large\sffamily}
+	},
+	roundstyle/.style={
+		for tree={circle,draw,font=\large}
+	}
+}
+
+% disponi algoritmi
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\makeatletter
+\renewcommand{\ALG@name}{Algoritmo}
+\makeatother
+
+% disponi numeri di pagina
+\usepackage{fancyhdr}
+\fancyhf{} 
+\fancyfoot[L]{\sffamily{\thepage}}
+
+\makeatletter
+\fancyhead[L]{\raisebox{1ex}[0pt][0pt]{\sffamily{\@title \ \@date}}} 
+\fancyhead[R]{\raisebox{1ex}[0pt][0pt]{\sffamily{\@author}}}
+\makeatother
+
+\begin{document}
+% sezione (data)
+\section{Lezione del 24-10-25}
+
+% stili pagina
+\thispagestyle{empty}
+\pagestyle{fancy}
+
+% testo
+\subsection{Strategie di test}
+Come la progettazione, anche il testing può essere effettuato in modalità \textbf{top-down} o \textbf{bottom-up}.
+
+\begin{itemize}
+	\item \textbf{Top-down}: si parte dalla \textit{"testa"} del progetto e si va scendere. L'idea è di andare a simulare dalla radice fino agli altri moduli del sistema, prima che questi moduli vengano implementati. Il processo si ripete per via ricorsiva finché l'intero sistema non risulta come simulato.
+
+		In questo caso, per testare i moduli più alti bisogna disporre dei moduli di prova, detti \textit{simulatori} o \textbf{stub}, che vanno appunto a simulare il comportamento dei moduli più bassi.
+		
+	\item \textbf{Bottom-up}: si parte dai dettagli e si va a scendere. L'idea è che si vanno a collaudare prima i moduli di più basso livello nella gerarchia prodotta dalla progettazione: quando si valutano come corretti, si passa al livello superiore, e via dicendo fino a che non si è simulato il sistema intero.
+
+	Chiaramente, testare gli stadi più bassi richiede lo sviluppo di software detti \textbf{driver} (da non confondere con i driver dei S/O). Un driver è un software che ha il compito di \textit{pilotare} una funzionalità di livello più basso, simulando appunto come questa funzionalità potrebbe venire chiamata da eventuali stadi superiori.
+
+	Il vantaggio sta nel fatto che si testano prima gli stadi più bassi, trovando gli errori \textit{subito} (e non più tardi nello sviluppo, che sarebbe molto più costoso). 
+\end{itemize}
+
+La strategia che si implementa più spesso nella realtà è in verità una strategia \textbf{mista}.
+Quando le funzionalità di basso livello risultano più complicate, è infatti utile sfruttare un approccio bottom-up, mentre se il sistema è governato da una complessa logica di alto livello, è più comodo il top-down.
+
+\subsubsection{Verifiche statiche}
+Il punto critico dei test è rappresentato dal costo. Una forma di testing alternativa è quella di \textbf{verifica} (o \textit{ispezione}) \textbf{statica} del codice.
+Questo solitamente ci permette di individuare fra il 60\% e il 90\% degli errori.
+
+\subsubsection{Testing}
+L'ispezione statica chiaramente non basta, in quanto non intercetta gli errori dovuti all'esecuzione dinamica del programma.
+Occorre quindi procedere con un'apposita fase di \textbf{testing} dove si valuta il programma su più campioni di dati, in modo da verificarne il comportamento come corretto.
+
+Dobbiamo ricordare che è il testing é:
+\begin{itemize}
+	\item Mai \textbf{esaustivo}, e.g. un milione di test non equivarranno mai una verifica formale;
+	\item \textbf{Costoso}, cioè richiede sfruttamente di risorse macchina, e sopratutto risorse umane (tempo speso a scrivere test, eseguire test, ecc...).
+\end{itemize}
+
+Per effettuare un test bisogna:
+\begin{itemize}
+	\item Costruire un \textbf{test-case}, cioè disporre una situazione dove si conosce l'\textbf{input} e l'\textbf{output} corretto;
+	I test-case vanno ricavati alle specifiche e dai documenti ricavati dalla progettazione;
+	\item Dopo che il test-case è pronto, e si è configurato il sistema perché esegua il test, bisogna appunto eseguirlo, ottenere l'output e confrontarlo con quello desiderato;
+	\item I test devono essere \textbf{ripetibili}: bisogna poter ottenere più test (magari variando parametri) sullo stesso test-case, in modo da essere il più esaustivi possibile.
+\end{itemize}
+
+Una prima idea per generare gli input è quello di generarli \textbf{casualmente}.
+Questa soluzione è economica, ma ha lo svantaggio di non essere molto uniforme per piccoli campioni. Inoltre, gli input non saranno particolarmente significativi all'applicazione vera e propria (quindi creando situazioni irreali e di difficile valutazione).
+
+In questo risulta quindi più utile unire le specifiche del programma, la struttura stessa del programma, e sopratutto l'\textbf{esperienza} sul dominio del problema che il programma risolve. Questa spesso non viene dal programmatore, ma dagli attori che sono all'interno del dominio di problema stesso (i clienti).
+
+\subsubsection{Procedure di testing}
+Ci sono almeno 2 modi principali su come procedere al testing:
+\begin{itemize}
+	\item Testing a \textbf{scatola nera} (o \textbf{black box} testing): in questo caso si ricavano gli input solo guardando alle specifiche del programa. Il codice scritto a questo punto non viene considerato. Questo tipo di testing è tipico delle prime fasi di testing.
+
+		Dal punto di vista teorico, l'idea del testing a scatola nera è quello di dividere dividere i possibili input in \textbf{classi di equivalenza}, in modo che ogni possibile input abbia lo stesso \textbf{potere di testing}.
+
+	\item Testing \textbf{strutturale}: unisce le specifiche di programma al codice finora scritto per la generazione di test. Ha il vantaggio di testare più precisamente alcune procedure e dettagli che test a scatola nera non individuerebbero nel codice.
+
+		Dal punto di vista teorico, quello che vorremmo fare è sviluppare test che \textit{eslporino} tutto lo spazio di stato del programma, cioè attivino tutte le procedure (pensa flussi alternativi), in modo da testare funzionalità a cui magari si accede più raramente.
+
+\end{itemize}
+
+\subsection{Testing automatizzato}
+Chiaramente, è molto utile realizzare \textbf{test automatici}, cioè sfruttare strumenti software per effettuare automaticante i test al posto nostro.
+
+I casi tipici di automazione dei test sono:
+\begin{itemize}
+	\item Test \textbf{funzionali} per un prodotto, pensati per verificare le specifiche desiderate del prodotto;
+	\item Test per \textbf{nuovi rilasci} di un prodotto, atti a verificare che la funzionalità precedente non sia stata compromessa.
+\end{itemize}
+
+I \textbf{simulatori} sono ambienti all'interno di cui si può effettuare il testing non solo delle procedure del software, ma della totalità delle condizioni operative che dovrebbero trovarsi all'esterno del software.
+
+Questo chiaramente risulta molto costoso, ma può essere utile (se non fondamentale) per programmi particolarmente complessi, o per domini di problema particolarmente critici (mezzi di trasporto, industria biomedica, ecc...).
+
+\end{document}
